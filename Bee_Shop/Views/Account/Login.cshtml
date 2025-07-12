@@ -1,0 +1,100 @@
+﻿@model Bee_Shop.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Đăng nhập - Bee Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Font Awesome (icon) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- CSS từ assets/css/ -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/assets/css/skins/default.css" />
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.getElementById("togglePassword");
+
+        toggleIcon.addEventListener("click", function () {
+            const isHidden = passwordInput.type === "password";
+            passwordInput.type = isHidden ? "text" : "password";
+
+            // Chuyển icon: nếu đang hidden thì dùng mắt mở, ngược lại thì mắt đóng
+            this.classList.toggle("fa-eye-slash", !isHidden);
+            this.classList.toggle("fa-eye", isHidden);
+        });
+    });
+</script>
+
+<body>
+    <div class="container-fluid login-page">
+        <div class="row align-items-center vh-100">
+            <!-- LEFT: LOGIN BOX -->
+            <div class="col-md-5 d-flex justify-content-center">
+                <div class="login-box p-4 shadow bg-white rounded">
+                    <div class="text-center mb-4">
+                        <img src="~/img/logo.png" alt="logo" width="100" />
+                        <h3 class="mt-2">ĐĂNG NHẬP</h3>
+                    </div>
+
+                    <form asp-action="Login" method="post">
+                        <div class="form-group mb-3">
+                            <label for="UsernameOrEmail">Tên đăng nhập hoặc email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                <input asp-for="UsernameOrEmail" class="form-control" placeholder="Nhập tên đăng nhập hoặc email" />
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="Password">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                <input asp-for="Password" class="form-control" type="password" id="password" placeholder="••••••••" />
+                                <span class="input-group-text">
+                                    <i class="fa fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i> <!-- mắt đóng ban đầu -->
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary w-100">ĐĂNG NHẬP</button>
+
+                        <div class="text-danger mt-2 text-center">@ViewBag.Error</div>
+
+                        <div class="text-center mt-3">
+                            <a href="#">🔒 Quên mật khẩu?</a><br />
+                            Hoặc <a href="#">Đăng ký để sử dụng</a>
+                        </div>
+
+                        <div class="social-login text-center mt-3">
+                            <a href="#"><i class="fab fa-facebook fa-lg mx-2"></i></a>
+                            <a href="#"><i class="fab fa-twitter fa-lg mx-2"></i></a>
+                            <a href="#"><i class="fab fa-google fa-lg mx-2"></i></a>
+                        </div>
+                    </form>
+
+                    <footer class="mt-4 text-center text-muted small">
+                        © 2025, Thiết kế: LÊ TRẦN HOÀNG HUÂN - 2200004236
+                    </footer>
+                </div>
+            </div>
+
+            <!-- RIGHT: ILLUSTRATION -->
+            <div class="col-md-7 d-none d-md-block text-center">
+                <img src="~/img/LoginBanner.png" class="img-fluid" style="max-height: 120vh; position: center" />
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

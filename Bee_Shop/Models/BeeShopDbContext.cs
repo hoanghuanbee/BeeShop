@@ -49,7 +49,7 @@ public partial class BeeShopDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=127.0.0.1;Database=BeeShopDB;User Id=BeeUser;Password=StrongPassword123!;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Data Source=HOANGHUAN\\MSSQLSERVER01;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;Initial Catalog=BeeShopDB;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -467,6 +467,7 @@ public partial class BeeShopDbContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
+            entity.Property(e => e.ConfirmationToken).HasMaxLength(255);
             entity.Property(e => e.CreateDate)
                 .HasColumnType("datetime")
                 .HasColumnName("createDate");

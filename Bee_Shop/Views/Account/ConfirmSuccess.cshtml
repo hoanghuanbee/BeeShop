@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Xác nhận Email thành công";
+}
+
+<style>
+    body {
+        background: #f0f4f8;
+        font-family: Arial, sans-serif;
+    }
+
+    .confirm-container {
+        max-width: 500px;
+        margin: 100px auto;
+        background: #ffffff;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+        .confirm-container h2 {
+            color: #28a745;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .confirm-container p {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .confirm-container .icon {
+            font-size: 48px;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+    .btn-login {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-login:hover {
+            background-color: #218838;
+        }
+
+    .countdown {
+        color: #888;
+        font-size: 14px;
+    }
+</style>
+
+<div class="confirm-container">
+    <div class="icon">✅</div>
+    <h2>Xác nhận Email thành công!</h2>
+    <p>Email <strong>@ViewBag.Email</strong> đã được xác nhận. Giờ bạn có thể đăng nhập.</p>
+    <a href="/Account/Login" class="btn-login">Đăng nhập ngay</a>
+    <p class="countdown">Bạn sẽ được chuyển hướng sau <span id="countdown">5</span> giây...</p>
+</div>
+
+<script>
+    let seconds = 5;
+    const countdownEl = document.getElementById('countdown');
+    const interval = setInterval(() => {
+        seconds--;
+        countdownEl.textContent = seconds;
+        if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.href = '/Account/Login';
+        }
+    }, 1000);
+</script>

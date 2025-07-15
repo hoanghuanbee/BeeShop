@@ -1,0 +1,102 @@
+﻿@model Bee_Shop.ViewModels.RegisterViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Đăng ký - Bee Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/assets/css/skins/default.css" />
+</head>
+
+<body>
+    <div class="container-fluid login-page">
+        <div class="row align-items-center vh-100">
+            <!-- LEFT: REGISTER BOX -->
+            <div class="col-md-5 d-flex justify-content-center">
+                <div class="login-box p-4 shadow bg-white rounded">
+                    <div class="text-center mb-4">
+                        <img src="~/img/logo.png" alt="logo" width="100" />
+                        <h3 class="mt-2">ĐĂNG KÝ</h3>
+                    </div>
+
+                    <form asp-action="Register" method="post" id="registerForm">
+                        <!-- USERNAME -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Username">Tên đăng nhập</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                <input asp-for="Username" class="form-control" placeholder="Nhập tên đăng nhập" id="username" />
+                            </div>
+                            <div id="usernameCheck" class="form-text text-danger small"></div>
+                        </div>
+
+                        <!-- EMAIL -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Email">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                <input asp-for="Email" class="form-control" placeholder="example@gmail.com" id="email" />
+                            </div>
+                            <div id="emailCheck" class="form-text text-danger small"></div>
+                        </div>
+
+                        <!-- PASSWORD -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Password">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                <input asp-for="Password" type="password" class="form-control" id="password" placeholder="••••••••" />
+                                <span class="input-group-text">
+                                    <i class="fa fa-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
+                                </span>
+                            </div>
+                            <div id="passwordCheck" class="form-text text-danger small"></div>
+                        </div>
+
+                        <!-- CONFIRM PASSWORD -->
+                        <!-- CONFIRM PASSWORD -->
+                        <div class="form-group mb-3">
+                            <label asp-for="ConfirmPassword">Nhập lại mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="••••••••" />
+                                <span class="input-group-text">
+                                    <i class="fa fa-eye-slash" id="toggleConfirmPassword" style="cursor: pointer;"></i>
+                                </span>
+                            </div>
+                            <div id="confirmPasswordCheck" class="form-text text-danger small"></div>
+                        </div>  
+
+
+                        <button type="submit" class="btn btn-primary w-100">ĐĂNG KÝ</button>
+
+                        <div class="text-center mt-3">
+                            Đã có tài khoản? <a asp-action="Login">Đăng nhập ngay</a>
+                        </div>
+                    </form>
+
+                    <footer class="mt-4 text-center text-muted small">
+                        © 2025, Thiết kế: LÊ TRẦN HOÀNG HUÂN - 2200004236
+                    </footer>
+                </div>
+            </div>
+            <!-- RIGHT: IMAGE -->
+            <div class="col-md-7 d-none d-md-block text-center">
+                <img src="~/img/LoginBanner.png" class="img-fluid" style="max-height: 120vh;" />
+            </div>
+        </div>
+    </div>
+
+    <!-- JS: Eye Toggle & Validation -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="~/assets/js/register.js"></script>
+
+</body>
+</html>

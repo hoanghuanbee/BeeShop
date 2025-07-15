@@ -69,8 +69,9 @@
                         <div class="text-danger mt-2 text-center">@ViewBag.Error</div>
 
                         <div class="text-center mt-3">
-                            <a href="#">🔒 Quên mật khẩu?</a><br />
-                            Hoặc <a href="#">Đăng ký để sử dụng</a>
+                            <a asp-action="ForgotPassword">🔒 Quên mật khẩu?</a><br />
+                            <a asp-action="ResendConfirmation">📧 Gửi lại email xác nhận</a><br />
+                            Hoặc <a asp-action="Register">Đăng ký để sử dụng</a>
                         </div>
 
                         <div class="social-login text-center mt-3">

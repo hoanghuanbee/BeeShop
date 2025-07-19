@@ -43,8 +43,7 @@
                     <td>@child.Slug</td>
                     <td>
                         <a href="/Admin/Category/Edit?id=@child.Id" class="btn btn-sm btn-warning">✏️ Sửa</a>
-                        <form asp-action="DeleteConfirmed" method="post" style="display:inline;" onsubmit="return confirm('Xóa danh mục con này?');">
-                            <input type="hidden" name="id" value="@child.Id" />
+                        <form asp-action="Delete" asp-route-id="@parent.Id" method="post" style="display:inline;" onsubmit="return confirm('Xóa danh mục này?');">
                             <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
                         </form>
                     </td>

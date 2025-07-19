@@ -21,10 +21,10 @@
         <label asp-for="SupplyId" class="form-label">Danh mục cha</label>
         <select asp-for="SupplyId" class="form-select">
             <option value="">-- Không có danh mục cha --</option>
-            @foreach (var item in danhMucCha)
+            @foreach (var item in ViewBag.DanhMucCha as List<SelectListItem>)
             {
-                <option value="@item.Id" selected="@(item.Id == Model.SupplyId)">
-                    @item.CategoryName
+                <option value="@item.Value" selected="@(item.Value == Model.SupplyId?.ToString() ? "selected" : null)">
+                    @item.Text
                 </option>
             }
         </select>

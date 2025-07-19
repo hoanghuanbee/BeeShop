@@ -17,7 +17,6 @@ namespace Bee_Shop.Models
 
         public int? CategoryPosition { get; set; }
 
-        [Required]
         public string Slug { get; set; } = string.Empty;
 
         // Navigation properties

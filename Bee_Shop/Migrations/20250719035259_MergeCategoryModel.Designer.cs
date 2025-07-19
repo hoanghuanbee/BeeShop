@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bee_Shop.Migrations
 {
     [DbContext(typeof(BeeShopDbContext))]
-    [Migration("20250715070934_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20250719035259_MergeCategoryModel")]
+    partial class MergeCategoryModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,8 +37,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.BudgetHistory", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Amount")
                         .HasColumnType("int")
@@ -78,8 +81,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.CartUser", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Number")
                         .HasColumnType("int")
@@ -99,44 +105,14 @@ namespace Bee_Shop.Migrations
                     b.ToTable("cart_user", (string)null);
                 });
 
-            modelBuilder.Entity("Bee_Shop.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<string>("CategoryName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("category_name");
-
-                    b.Property<int?>("CategoryPosition")
-                        .HasColumnType("int")
-                        .HasColumnName("category_position");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("slug");
-
-                    b.Property<int?>("SupplyId")
-                        .HasColumnType("int")
-                        .HasColumnName("supply_id");
-
-                    b.HasKey("Id")
-                        .HasName("PK__categori__3213E83FEEFDED84");
-
-                    b.ToTable("categories", (string)null);
-                });
-
             modelBuilder.Entity("Bee_Shop.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Author")
                         .HasMaxLength(100)
@@ -211,8 +187,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.Feedback", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreateTime")
                         .HasColumnType("datetime")
@@ -272,8 +251,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.Medium", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime")
@@ -300,8 +282,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.Order", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -369,8 +354,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int")
@@ -401,8 +389,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.Product", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int")
@@ -534,8 +525,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.StockImport", b =>
                 {
                     b.Property<int>("ImportId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("import_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImportId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -576,8 +570,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.StockImportsItem", b =>
                 {
                     b.Property<int>("ImportItemId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("import_item_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImportItemId"));
 
                     b.Property<int>("ImportId")
                         .HasColumnType("int")
@@ -601,46 +598,14 @@ namespace Bee_Shop.Migrations
                     b.ToTable("stock_imports_items", (string)null);
                 });
 
-            modelBuilder.Entity("Bee_Shop.Models.Subcategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int")
-                        .HasColumnName("category_id");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("slug");
-
-                    b.Property<string>("SubcategoryName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("subcategory_name");
-
-                    b.Property<int?>("SupplyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1)
-                        .HasColumnName("supply_id");
-
-                    b.HasKey("Id")
-                        .HasName("PK__subcateg__3213E83FA86EB819");
-
-                    b.ToTable("subcategory", (string)null);
-                });
-
             modelBuilder.Entity("Bee_Shop.Models.Supply", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ImportId")
                         .HasColumnType("int")
@@ -667,8 +632,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.Type", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -698,8 +666,11 @@ namespace Bee_Shop.Migrations
             modelBuilder.Entity("Bee_Shop.Models.User", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConfirmationToken")
                         .HasMaxLength(255)
@@ -775,6 +746,51 @@ namespace Bee_Shop.Migrations
                         .HasName("PK__users__3213E83F9CED86FB");
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("CategoryPosition")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SupplyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplyId");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.HasOne("Category", "ParentCategory")
+                        .WithMany("Children")
+                        .HasForeignKey("SupplyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

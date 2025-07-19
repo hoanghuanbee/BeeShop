@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Bee Shop Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap & Custom CSS -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/assets/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/site.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-logo">
+            <img src="~/assets/img/slides/logo.png" alt="Logo" height="40" />
+        </div>
+
+        <div class="admin-title">
+            <h1>TRANG QUẢN TRỊ BEE SHOP</h1>
+        </div>
+
+        @using System.Security.Claims
+        <div class="admin-user-info">
+            Xin chào, <strong>@User.Identity?.Name</strong>
+            (@User.FindFirst(ClaimTypes.Role)?.Value) |
+            <a href="/Account/Logout" style="color:black; font-weight:bold;">Đăng xuất</a>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <nav class="admin-menu">
+            <ul>
+                <li><a href="/Admin/Dashboard">📊 Dashboard</a></li>
+                <li><a href="/Admin/Category">📂 Danh mục</a></li>
+                <li><a href="/Admin/Product">📦 Sản phẩm</a></li>
+                <li><a href="/Admin/Import">📥 Nhập hàng</a></li>
+                <li><a href="/Admin/Stock">🏷️ Kho hàng</a></li>
+                <li><a href="/Admin/User">👤 Quản lý User</a></li>
+                <li><a href="/Admin/Feedback">💬 Feedback</a></li>
+                <li><a href="/Admin/Budget">💰 Ngân sách</a></li>
+            </ul>
+        </nav>
+
+        <main class="admin-content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- JS: jQuery + Bootstrap + Custom -->
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/js/bootstrap.js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/admin.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -32,7 +32,7 @@ public class AccountController : Controller
 
         if (user != null)
         {
-            // ✅ Chặn đăng nhập nếu chưa xác thực email
+            // Chặn đăng nhập nếu chưa xác thực email
             if (user.Verified != 1)
             {
                 ViewBag.Error = "Tài khoản của bạn chưa được xác nhận qua email.";
@@ -44,14 +44,14 @@ public class AccountController : Controller
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserUsername),
-                new Claim("Role", role),
+                new Claim(ClaimTypes.Role, role),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            await HttpContext.SignInAsync("Cookies", principal);
             return RedirectToAction("Index", "Home");
         }
 
@@ -61,7 +61,7 @@ public class AccountController : Controller
 
     public async Task<IActionResult> Logout()
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync("Cookies");
         return RedirectToAction("Login");
     }
 
@@ -214,6 +214,11 @@ public class AccountController : Controller
         await _emailSender.SendConfirmationEmail(appUrl, user.UserEmail, user.ConfirmationToken);
 
         ViewBag.Message = "✅ Email xác nhận đã được gửi lại. Vui lòng kiểm tra hộp thư.";
+        return View();
+    }
+    [HttpGet]
+    public IActionResult AccessDenied()
+    {
         return View();
     }
 

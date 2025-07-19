@@ -21,7 +21,7 @@ public partial class BeeShopDbContext : DbContext
 
     public virtual DbSet<CartUser> CartUsers { get; set; }
 
-    public virtual DbSet<Category> Categories { get; set; }
+  
 
     public virtual DbSet<Comment> Comments { get; set; }
 
@@ -39,7 +39,9 @@ public partial class BeeShopDbContext : DbContext
 
     public virtual DbSet<StockImportsItem> StockImportsItems { get; set; }
 
-    public virtual DbSet<Subcategory> Subcategories { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
+
+
 
     public virtual DbSet<Supply> Supplies { get; set; }
 
@@ -51,8 +53,16 @@ public partial class BeeShopDbContext : DbContext
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=HOANGHUAN\\MSSQLSERVER01;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;Initial Catalog=BeeShopDB;");
 
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Category>()
+            .HasOne(c => c.ParentCategory)
+            .WithMany(c => c.Children)
+            .HasForeignKey(c => c.SupplyId)
+    .       OnDelete(DeleteBehavior.Restrict); // Tránh xóa lan
+
+
         modelBuilder.Entity<Budget>(entity =>
         {
             entity
@@ -69,7 +79,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("budget_history");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Amount).HasColumnName("amount");
             entity.Property(e => e.CreatedAt)
@@ -92,33 +102,14 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("cart_user");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Number).HasColumnName("number");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
         });
 
-        modelBuilder.Entity<Category>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__categori__3213E83FEEFDED84");
-
-            entity.ToTable("categories");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.CategoryName)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("category_name");
-            entity.Property(e => e.CategoryPosition).HasColumnName("category_position");
-            entity.Property(e => e.Slug)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("slug");
-            entity.Property(e => e.SupplyId).HasColumnName("supply_id");
-        });
+        
 
         modelBuilder.Entity<Comment>(entity =>
         {
@@ -127,7 +118,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("comments");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Author)
                 .HasMaxLength(100)
@@ -172,7 +163,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("feedbacks");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.CreateTime)
                 .HasColumnType("datetime")
@@ -206,7 +197,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("media");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.CreateDate)
                 .HasColumnType("datetime")
@@ -228,7 +219,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("orders");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Address)
                 .HasMaxLength(500)
@@ -268,7 +259,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("order_detail");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
             entity.Property(e => e.Price).HasColumnName("price");
@@ -284,7 +275,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("products");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
             entity.Property(e => e.CreateBy)
@@ -347,11 +338,7 @@ public partial class BeeShopDbContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("slug");
-            entity.Property(e => e.SubCategoryId).HasColumnName("sub_category_id");
-            entity.Property(e => e.SupplyId).HasColumnName("supply_id");
-            entity.Property(e => e.TotalView)
-                .HasDefaultValue(0)
-                .HasColumnName("totalView");
+           
         });
 
         modelBuilder.Entity<StockImport>(entity =>
@@ -361,7 +348,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("stock_imports");
 
             entity.Property(e => e.ImportId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("import_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -389,7 +376,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("stock_imports_items");
 
             entity.Property(e => e.ImportItemId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("import_item_id");
             entity.Property(e => e.ImportId).HasColumnName("import_id");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
@@ -397,28 +384,9 @@ public partial class BeeShopDbContext : DbContext
             entity.Property(e => e.UnitCost).HasColumnName("unit_cost");
         });
 
-        modelBuilder.Entity<Subcategory>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__subcateg__3213E83FA86EB819");
+        
 
-            entity.ToTable("subcategory");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.CategoryId).HasColumnName("category_id");
-            entity.Property(e => e.Slug)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("slug");
-            entity.Property(e => e.SubcategoryName)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("subcategory_name");
-            entity.Property(e => e.SupplyId)
-                .HasDefaultValue(1)
-                .HasColumnName("supply_id");
-        });
 
         modelBuilder.Entity<Supply>(entity =>
         {
@@ -427,7 +395,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("supplies");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.ImportId).HasColumnName("import_id");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
@@ -442,7 +410,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("types");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Slug)
                 .HasMaxLength(255)
@@ -465,7 +433,7 @@ public partial class BeeShopDbContext : DbContext
             entity.ToTable("users");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.ConfirmationToken).HasMaxLength(255);
             entity.Property(e => e.CreateDate)

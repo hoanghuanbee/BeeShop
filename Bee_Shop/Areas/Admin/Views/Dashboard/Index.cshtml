@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Trang chủ Admin";
+}
+
+<h2>Dashboard Admin</h2>
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">@TempData["error"]</div>
+}   
+<p>Trang dành cho admin. Màu vàng đen đã sẵn sàng!</p>

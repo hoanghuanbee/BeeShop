@@ -4,6 +4,7 @@ using Bee_Shop.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bee_Shop.Migrations
 {
     [DbContext(typeof(BeeShopDbContext))]
-    partial class BeeShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250719033806_InitSchema")]
+    partial class InitSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -500,13 +503,18 @@ namespace Bee_Shop.Migrations
                         .HasColumnName("slug");
 
                     b.Property<int?>("SubCategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("sub_category_id");
 
                     b.Property<int?>("SupplyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("supply_id");
 
                     b.Property<int?>("TotalView")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("totalView");
 
                     b.HasKey("Id")
                         .HasName("PK__products__3213E83F4338A179");
@@ -740,47 +748,80 @@ namespace Bee_Shop.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("Category", b =>
+            modelBuilder.Entity("CategoryChild", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("category_name");
 
                     b.Property<int?>("CategoryPosition")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("category_position");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int")
+                        .HasColumnName("parent_id");
 
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SupplyId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("category_children", (string)null);
+                });
+
+            modelBuilder.Entity("CategoryParent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("category_name");
+
+                    b.Property<int?>("CategoryPosition")
+                        .HasColumnType("int")
+                        .HasColumnName("category_position");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SupplyId");
-
-                    b.ToTable("Categories");
+                    b.ToTable("category_parents", (string)null);
                 });
 
-            modelBuilder.Entity("Category", b =>
+            modelBuilder.Entity("CategoryChild", b =>
                 {
-                    b.HasOne("Category", "ParentCategory")
+                    b.HasOne("CategoryParent", "Parent")
                         .WithMany("Children")
-                        .HasForeignKey("SupplyId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("ParentCategory");
+                    b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Category", b =>
+            modelBuilder.Entity("CategoryParent", b =>
                 {
                     b.Navigation("Children");
                 });

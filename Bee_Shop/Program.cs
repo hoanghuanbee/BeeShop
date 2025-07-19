@@ -13,12 +13,13 @@ builder.Services.AddDbContext<BeeShopDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BeeShopDB")));
 
 // Authentication
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication("Cookies") // 👈 Gán đây là scheme mặc định
     .AddCookie("Cookies", options =>
     {
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.LoginPath = "/Account/Login";          // Khi chưa đăng nhập
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Khi sai quyền
     });
+
 
 // Authorization
 builder.Services.AddAuthorization(options =>
@@ -49,6 +50,9 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 // Routing
 app.MapControllerRoute(
     name: "default",

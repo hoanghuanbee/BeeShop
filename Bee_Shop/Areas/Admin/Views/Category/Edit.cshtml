@@ -1,0 +1,52 @@
+﻿@model Bee_Shop.Models.Category
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "✏️ Sửa Danh Mục";
+    var danhMucCha = ViewBag.DanhMucCha as List<Bee_Shop.Models.Category> ?? new List<Bee_Shop.Models.Category>();
+}
+
+<h2 class="mb-4">✏️ Sửa Danh Mục</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-3">
+        <label asp-for="CategoryName" class="form-label"></label>
+        <input asp-for="CategoryName" class="form-control" />
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="SupplyId" class="form-label">Danh mục cha</label>
+        <select asp-for="SupplyId" class="form-select">
+            <option value="">-- Không có danh mục cha --</option>
+            @foreach (var item in danhMucCha)
+            {
+                <option value="@item.Id" selected="@(item.Id == Model.SupplyId)">
+                    @item.CategoryName
+                </option>
+            }
+        </select>
+        <span asp-validation-for="SupplyId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="CategoryPosition" class="form-label">Vị trí</label>
+        <input asp-for="CategoryPosition" class="form-control" />
+        <span asp-validation-for="CategoryPosition" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Slug" class="form-label">Slug</label>
+        <input asp-for="Slug" class="form-control" />
+        <span asp-validation-for="Slug" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
+    <a class="btn btn-secondary" href="/Admin/Category">⬅️ Quay lại</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

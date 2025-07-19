@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bee_Shop.Migrations
 {
     /// <inheritdoc />
-    public partial class MyFirstMigration : Migration
+    public partial class InitSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,8 @@ namespace Bee_Shop.Migrations
                 name: "budget_history",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     amount = table.Column<int>(type: "int", nullable: false),
                     reason = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
                     order_id = table.Column<int>(type: "int", nullable: true),
@@ -42,7 +43,8 @@ namespace Bee_Shop.Migrations
                 name: "cart_user",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     user_id = table.Column<int>(type: "int", nullable: false),
                     product_id = table.Column<int>(type: "int", nullable: false),
                     number = table.Column<int>(type: "int", nullable: false)
@@ -53,25 +55,26 @@ namespace Bee_Shop.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "categories",
+                name: "category_parents",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    category_name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    supply_id = table.Column<int>(type: "int", nullable: true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    category_name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     category_position = table.Column<int>(type: "int", nullable: true),
-                    slug = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false)
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__categori__3213E83FEEFDED84", x => x.id);
+                    table.PrimaryKey("PK_category_parents", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "comments",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     parent_comment_id = table.Column<int>(type: "int", nullable: true),
                     user_id = table.Column<int>(type: "int", nullable: false),
                     content = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
@@ -94,7 +97,8 @@ namespace Bee_Shop.Migrations
                 name: "feedbacks",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true),
                     email = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false, defaultValue: ""),
                     phone = table.Column<long>(type: "bigint", nullable: true),
@@ -115,7 +119,8 @@ namespace Bee_Shop.Migrations
                 name: "media",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     media_name = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
                     slug = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
                     createDate = table.Column<DateTime>(type: "datetime", nullable: false)
@@ -129,7 +134,8 @@ namespace Bee_Shop.Migrations
                 name: "order_detail",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     order_id = table.Column<int>(type: "int", nullable: false),
                     product_id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
@@ -145,7 +151,8 @@ namespace Bee_Shop.Migrations
                 name: "orders",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     customer = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
                     province = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     address = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
@@ -167,7 +174,8 @@ namespace Bee_Shop.Migrations
                 name: "products",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     product_name = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
                     product_typeid = table.Column<int>(type: "int", nullable: false),
                     category_id = table.Column<int>(type: "int", nullable: true),
@@ -201,7 +209,8 @@ namespace Bee_Shop.Migrations
                 name: "stock_imports",
                 columns: table => new
                 {
-                    import_id = table.Column<int>(type: "int", nullable: false),
+                    import_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     supplier_name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
                     import_date = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())"),
                     invoice_id = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
@@ -217,7 +226,8 @@ namespace Bee_Shop.Migrations
                 name: "stock_imports_items",
                 columns: table => new
                 {
-                    import_item_id = table.Column<int>(type: "int", nullable: false),
+                    import_item_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     import_id = table.Column<int>(type: "int", nullable: false),
                     product_id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
@@ -229,25 +239,11 @@ namespace Bee_Shop.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "subcategory",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    subcategory_name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    supply_id = table.Column<int>(type: "int", nullable: true, defaultValue: 1),
-                    category_id = table.Column<int>(type: "int", nullable: true),
-                    slug = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__subcateg__3213E83FA86EB819", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "supplies",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     import_id = table.Column<int>(type: "int", nullable: false),
                     product_id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
@@ -262,7 +258,8 @@ namespace Bee_Shop.Migrations
                 name: "types",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     type_name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     type_description = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     slug = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false)
@@ -276,7 +273,8 @@ namespace Bee_Shop.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     user_username = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     user_password = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     user_name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
@@ -295,6 +293,33 @@ namespace Bee_Shop.Migrations
                 {
                     table.PrimaryKey("PK__users__3213E83F9CED86FB", x => x.id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "category_children",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    category_name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    category_position = table.Column<int>(type: "int", nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    parent_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_category_children", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_category_children_category_parents_parent_id",
+                        column: x => x.parent_id,
+                        principalTable: "category_parents",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_category_children_parent_id",
+                table: "category_children",
+                column: "parent_id");
         }
 
         /// <inheritdoc />
@@ -310,7 +335,7 @@ namespace Bee_Shop.Migrations
                 name: "cart_user");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "category_children");
 
             migrationBuilder.DropTable(
                 name: "comments");
@@ -337,9 +362,6 @@ namespace Bee_Shop.Migrations
                 name: "stock_imports_items");
 
             migrationBuilder.DropTable(
-                name: "subcategory");
-
-            migrationBuilder.DropTable(
                 name: "supplies");
 
             migrationBuilder.DropTable(
@@ -347,6 +369,9 @@ namespace Bee_Shop.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "category_parents");
         }
     }
 }

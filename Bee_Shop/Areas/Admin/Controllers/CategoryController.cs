@@ -155,7 +155,7 @@ namespace Bee_Shop.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteParent(int id)
         {
             var category = _context.Categories
                 .Include(c => c.Children)
@@ -165,16 +165,32 @@ namespace Bee_Shop.Areas.Admin.Controllers
 
             if (category.Children?.Any() == true)
             {
-                foreach (var child in category.Children)
-                {
-                    child.SupplyId = null;
-                }
+                TempData["Error"] = "Không thể xóa danh mục cha vì vẫn còn danh mục con!";
+                return RedirectToAction(nameof(Index));
             }
 
             _context.Categories.Remove(category);
             _context.SaveChanges();
+            TempData["Success"] = "Đã xóa danh mục cha thành công!";
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteChild(int id)
+        {
+            var category = _context.Categories.Find(id);
+            if (category == null) return NotFound();
+
+            _context.Categories.Remove(category);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Đã xóa danh mục con thành công!";
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
 
         // Generate SEO-friendly Slug
         private string GenerateSlug(string input)

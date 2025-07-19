@@ -7,6 +7,16 @@
 
 <h2>📂 Danh sách Danh Mục</h2>
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
 <a href="/Admin/Category/Create" class="btn btn-success mb-3">➕ Thêm Danh Mục Cha</a>
 
 <table class="table table-bordered table-striped">
@@ -27,7 +37,7 @@
                 <td>@parent.Slug</td>
                 <td>
                     <a href="/Admin/Category/Edit?id=@parent.Id" class="btn btn-sm btn-warning">✏️ Sửa</a>
-                    <form asp-action="DeleteConfirmed" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa danh mục cha này?');">
+                    <form asp-action="DeleteParent" method="post" style="display:inline;" onsubmit="return confirm('Bạn chắc chắn muốn xóa danh mục cha này?');">
                         <input type="hidden" name="id" value="@parent.Id" />
                         <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
                     </form>
@@ -43,7 +53,8 @@
                     <td>@child.Slug</td>
                     <td>
                         <a href="/Admin/Category/Edit?id=@child.Id" class="btn btn-sm btn-warning">✏️ Sửa</a>
-                        <form asp-action="Delete" asp-route-id="@parent.Id" method="post" style="display:inline;" onsubmit="return confirm('Xóa danh mục này?');">
+                        <form asp-action="DeleteChild" method="post" style="display:inline;" onsubmit="return confirm('Xóa danh mục con này?');">
+                            <input type="hidden" name="id" value="@child.Id" />
                             <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
                         </form>
                     </td>

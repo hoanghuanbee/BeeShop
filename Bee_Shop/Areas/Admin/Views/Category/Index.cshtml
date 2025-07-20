@@ -18,7 +18,23 @@
 }
 
 <a href="/Admin/Category/Create" class="btn btn-success mb-3">➕ Thêm Danh Mục Cha</a>
-
+<form method="get" class="row mb-3">
+    <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="🔍 Tìm danh mục..." value="@Context.Request.Query["search"]" />
+    </div>
+    <div class="col-md-3">
+        <select name="sort" class="form-select" onchange="this.form.submit()">
+            <option value="">-- Sắp xếp theo --</option>
+            <option value="name" selected="@(Context.Request.Query["sort"] == "name" ? "selected" : null)">Tên A-Z</option>
+            <option value="name_desc" selected="@(Context.Request.Query["sort"] == "name_desc" ? "selected" : null)">Tên Z-A</option>
+            <option value="position" selected="@(Context.Request.Query["sort"] == "position" ? "selected" : null)">Vị trí ↑</option>
+            <option value="position_desc" selected="@(Context.Request.Query["sort"] == "position_desc" ? "selected" : null)">Vị trí ↓</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+    </div>
+</form>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -29,7 +45,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var parent in Model.Where(c => c.SupplyId == null))
+        @foreach (var parent in Model)
         {
             <tr style="background-color: #f0f0f0;">
                 <td><strong>📁 @parent.CategoryName</strong></td>
@@ -45,21 +61,25 @@
                 </td>
             </tr>
 
-            @foreach (var child in Model.Where(c => c.SupplyId == parent.Id))
+            @if (parent.Children != null)
             {
-                <tr>
-                    <td style="padding-left: 40px;">📄 @child.CategoryName</td>
-                    <td>@child.CategoryPosition</td>
-                    <td>@child.Slug</td>
-                    <td>
-                        <a href="/Admin/Category/Edit?id=@child.Id" class="btn btn-sm btn-warning">✏️ Sửa</a>
-                        <form asp-action="DeleteChild" method="post" style="display:inline;" onsubmit="return confirm('Xóa danh mục con này?');">
-                            <input type="hidden" name="id" value="@child.Id" />
-                            <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
-                        </form>
-                    </td>
-                </tr>
+                foreach (var child in parent.Children)
+                {
+                    <tr>
+                        <td style="padding-left: 40px;">📄 @child.CategoryName</td>
+                        <td>@child.CategoryPosition</td>
+                        <td>@child.Slug</td>
+                        <td>
+                            <a href="/Admin/Category/Edit?id=@child.Id" class="btn btn-sm btn-warning">✏️ Sửa</a>
+                            <form asp-action="DeleteChild" method="post" style="display:inline;" onsubmit="return confirm('Xóa danh mục con này?');">
+                                <input type="hidden" name="id" value="@child.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
             }
         }
+       
     </tbody>
 </table>

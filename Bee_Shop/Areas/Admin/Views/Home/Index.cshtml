@@ -1,0 +1,13 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Bee_Shop.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    public class HomeController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View(); // ✅ Hiển thị dashboard chứ không redirect nữa
+        }
+    }
+}

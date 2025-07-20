@@ -20,10 +20,14 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login() => View();
+    public IActionResult Login(string? returnUrl = null)
+    {
+        ViewBag.ReturnUrl = returnUrl;
+        return View();
+    }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model)
+    public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
         var user = _context.Users
             .FirstOrDefault(u =>
@@ -32,30 +36,31 @@ public class AccountController : Controller
 
         if (user != null)
         {
-            // Chặn đăng nhập nếu chưa xác thực email
             if (user.Verified != 1)
             {
-                ViewBag.Error = "Tài khoản của bạn chưa được xác nhận qua email.";
+                ViewBag.Error = "Tài khoản chưa được xác nhận.";
                 return View(model);
             }
 
-            var role = GetRoleName(user.RoleId);
-
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserUsername),
-                new Claim(ClaimTypes.Role, role),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
+        {
+            new Claim(ClaimTypes.Name, user.UserUsername),
+            new Claim(ClaimTypes.Role, GetRoleName(user.RoleId)),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+        };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
-
             await HttpContext.SignInAsync("Cookies", principal);
-            return RedirectToAction("Index", "Home");
+
+            // 🔁 Quay lại trang trước hoặc mặc định về Admin Dashboard
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            else
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
         }
 
-        ViewBag.Error = "Sai tài khoản, email hoặc mật khẩu.";
+        ViewBag.Error = "Sai tài khoản hoặc mật khẩu.";
         return View(model);
     }
 

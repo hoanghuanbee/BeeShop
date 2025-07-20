@@ -26,11 +26,31 @@ namespace Bee_Shop.Services
                 var confirmUrl = $"{appUrl}/Account/Confirm?token={token}";
 
                 var body = $@"
-            <p>Chào bạn,</p>
-            <p>Bạn đã đăng ký tài khoản tại Bee Shop.</p>
-            <p>Nhấn vào liên kết sau để xác nhận tài khoản:</p>
-            <p><a href='{confirmUrl}'>Kích hoạt tài khoản</a></p>
-            <p>Cảm ơn bạn!</p>";
+                    <table style='max-width: 600px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0;'>
+                        <tr style='background-color: #fffbee;'>
+                            <td style='padding: 20px; text-align: center;'>
+                                <img src='https://yourdomain.com/images/beeshop-logo.png' alt='Bee Shop' style='max-width: 150px; height: auto;' />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 30px; background-color: #fffaf0; color: #333;'>
+                                <h2 style='color: #f0ad00;'>🐝 Xác nhận tài khoản của bạn</h2>
+                                <p>Chào bạn,</p>
+                                <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong style='color:#f0ad00;'>Bee Shop</strong>.</p>
+                                <p>Vui lòng nhấn vào nút dưới đây để xác nhận tài khoản của bạn:</p>
+                                <p style='text-align: center; margin: 30px 0;'>
+                                    <a href='{confirmUrl}' style='background-color: #ffc107; color: black; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;'>🐝 Kích hoạt tài khoản</a>
+                                </p>
+                                <p>Nếu bạn không yêu cầu đăng ký, vui lòng bỏ qua email này.</p>
+                                <p>Thân mến,<br/>Đội ngũ <strong>Bee Shop</strong> 🐝</p>
+                            </td>
+                        </tr>
+                        <tr style='background-color: #f7f7f7;'>
+                            <td style='padding: 15px; text-align: center; font-size: 12px; color: #888;'>
+                                © 2025 Bee Shop. All rights reserved.
+                            </td>
+                        </tr>
+                    </table>";
 
                 var mail = new MailMessage
                 {

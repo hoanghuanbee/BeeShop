@@ -13,11 +13,11 @@ builder.Services.AddDbContext<BeeShopDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BeeShopDB")));
 
 // Authentication
-builder.Services.AddAuthentication("Cookies") // 👈 Gán đây là scheme mặc định
+builder.Services.AddAuthentication("Cookies") 
     .AddCookie("Cookies", options =>
     {
-        options.LoginPath = "/Account/Login";          // Khi chưa đăng nhập
-        options.AccessDeniedPath = "/Account/AccessDenied"; // Khi sai quyền
+        options.LoginPath = "/Account/Login";      
+        options.AccessDeniedPath = "/Account/AccessDenied"; 
     });
 
 
@@ -26,7 +26,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Role", "Admin"));
     options.AddPolicy("StaffOnly", policy => policy.RequireClaim("Role", "Staff"));
-    // Thêm policy khác nếu cần
+   
 });
 
 // Email service

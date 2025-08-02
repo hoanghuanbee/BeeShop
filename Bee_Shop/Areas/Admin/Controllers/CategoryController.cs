@@ -170,14 +170,34 @@ namespace Bee_Shop.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult CreateChild(int supplyId)
         {
-            ViewBag.DanhMucCha = _context.Categories
+            var danhMucChaList = _context.Categories
                 .Where(c => c.SupplyId == null)
                 .Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
-                    Text = c.CategoryName
+                    Text = c.CategoryName,
+                    Selected = c.Id == supplyId
                 }).ToList();
 
+            // Gán selected = true cho mục đang chọn
+            foreach (var item in danhMucChaList)
+            {
+                if (item.Value == supplyId.ToString())
+                    item.Selected = true;
+            }
+
+            // Gán lại ViewBag
+            ViewBag.DanhMucCha = danhMucChaList;
+
+            // 🔧 Lấy tên danh mục cha từ DB thay vì từ dropdown (luôn đúng)
+            var tenDanhMucCha = _context.Categories
+                .Where(c => c.SupplyId == null && c.Id == supplyId)
+                .Select(c => c.CategoryName)
+                .FirstOrDefault();
+
+            ViewBag.TenDanhMucChaMacDinh = tenDanhMucCha;
+
+            // Gán sẵn SupplyId vào model → asp-for sẽ binding đúng
             var model = new Category
             {
                 SupplyId = supplyId
@@ -191,7 +211,7 @@ namespace Bee_Shop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateChild(Category category)
         {
-            ViewBag.DanhMucCha = _context.Categories
+            var danhMucChaList = _context.Categories
                 .Where(c => c.SupplyId == null)
                 .Select(c => new SelectListItem
                 {
@@ -199,34 +219,36 @@ namespace Bee_Shop.Areas.Admin.Controllers
                     Text = c.CategoryName
                 }).ToList();
 
+            ViewBag.DanhMucCha = danhMucChaList;
+            ViewBag.TenDanhMucChaMacDinh = danhMucChaList
+                .FirstOrDefault(c => c.Value == category.SupplyId?.ToString())?.Text;
+
             if (ModelState.IsValid)
             {
                 var normalizedName = category.CategoryName.Trim().ToLower();
 
-                // ✅ Kiểm tra trùng tên trong cùng một danh mục cha
                 if (_context.Categories.Any(c =>
                     c.SupplyId == category.SupplyId &&
                     c.CategoryName.ToLower() == normalizedName))
                 {
                     ModelState.AddModelError("CategoryName", "Tên danh mục con đã tồn tại trong danh mục cha này.");
-                    return View(category);
                 }
 
-                // Tạo slug nếu chưa có
                 if (string.IsNullOrEmpty(category.Slug))
                     category.Slug = GenerateSlug(category.CategoryName);
 
-                // ✅ Kiểm tra trùng slug
                 if (_context.Categories.Any(c => c.Slug == category.Slug))
                 {
                     ModelState.AddModelError("Slug", "Slug đã tồn tại.");
-                    return View(category);
                 }
 
-                _context.Categories.Add(category);
-                _context.SaveChanges();
-                TempData["Success"] = "✅ Đã thêm danh mục con thành công!";
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Categories.Add(category);
+                    _context.SaveChanges();
+                    TempData["Success"] = "✅ Đã thêm danh mục con thành công!";
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return View(category);

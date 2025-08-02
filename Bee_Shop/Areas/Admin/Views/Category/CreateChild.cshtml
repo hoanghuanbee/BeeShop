@@ -17,7 +17,19 @@
 
     <div class="form-group mb-3">
         <label asp-for="SupplyId">Danh mục cha</label>
-        <select asp-for="SupplyId" asp-items="ViewBag.DanhMucCha" class="form-control"></select>
+
+        @if (ViewBag.TenDanhMucChaMacDinh != null)
+        {
+            <div class="alert alert-info mb-2">
+                Mặc định đang thêm vào: <strong>@ViewBag.TenDanhMucChaMacDinh</strong>
+                (Bạn có thể chọn danh mục cha khác nếu muốn)
+            </div>
+        }
+
+        <select asp-for="SupplyId" asp-items="ViewBag.DanhMucCha" class="form-select">
+            <option value="">-- Chọn danh mục cha --</option>
+        </select>
+
         <span asp-validation-for="SupplyId" class="text-danger"></span>
     </div>
 
